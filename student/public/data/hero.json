@@ -1,0 +1,31 @@
+[{
+        "name": "不知火舞",
+        "img": "/img/bzhw.jpg",
+        "bgm": "/music/神话.mp3"
+    }, {
+        "name": "橘右京",
+        "img": "/img/jyj.jpg",
+        "bgm": "/music/三周年.mp3"
+    }, {
+        "name": "娜可露露",
+        "img": "/img/nkll.jpg",
+        "bgm": "/music/冠军杯.mp3"
+    }, {
+        "name": "夏洛特",
+        "img": "/img/xlt.jpg",
+        "bgm": "/music/三周年.mp3"
+    }, {
+        "name": "马可波罗",
+        "img": "/img/mk.jpg",
+        "bgm": "/music/三周年.mp3"
+    }, {
+        "name": "花木兰",
+        "img": "/img/hml.jpg",
+        "bgm": "/music/三周年.mp3"
+    }, {
+        "name": "李白",
+        "img": "/img/lb.jpg",
+        "bgm": "/music/三周年.mp3"
+    }
+
+]
