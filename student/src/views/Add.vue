@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>手机号码:</label>
-                    <input   type="text">
+                    <input   type="text" id="add_tel">
                 </div>
                 <div class="col-md-4">
                     <label>班级:</label>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-md-4">
                     <label>信息录入时间:</label>
-                    <input   type="date">
+                    <input   type="text" placeholder="系统自动生成" disabled="disabled">
                 </div>
             </div>
             <div class="row">
@@ -65,7 +65,7 @@
                     <input type="file" class="upload" value="上传"> 
                 </div>
                 <div class="col-md-4  line4">
-                    <input type="submit" class="submit" value="提交">
+                    <input type="submit" class="submit" value="提交" @click="checkAdd">
                 </div>
             </div>
         </div>	
@@ -74,8 +74,22 @@
 
 <script>
 export default {
+    data(){
+        return{
 
-    
+        }
+    },
+
+    methods:{
+        checkAdd:function(){
+            var str_tel = document.getElementById('add_tel').value.trim(); 
+            var reg_tel =/^[0-9]*$/;
+            if(!reg_tel.test(str_tel)){
+                alert("手机号码只能输入数字！");    
+            }
+    },
+
+    }   
 }
 </script>
 

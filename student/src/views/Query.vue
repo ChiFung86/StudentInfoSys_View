@@ -39,15 +39,17 @@
             </div>
         </div>
         <div class="row">
-            <div class=".col-md-12 ">  
+            <div class=".col-md-12">  
                 <button type="submit" class="submitquery" >
-                <router-link to="/" class=""><b>查询</b></router-link>
+                <router-link to="/" class="">查询</router-link>
                 </button>
-                <button type="reset" class="submitclear" ><b>清空</b></button>
+                <button type="reset" class="submitclear" >清空</button>
             </div>
         </div>
         </form>
 	</div>	
+
+  
 
 	</div>
 </template>
@@ -69,7 +71,7 @@ h1{
    
 }
 .dottedLine {
-        height: 100px;
+        height: 150px;
         border: none;
         border-top: 4px dotted #636568;
     }
@@ -77,11 +79,14 @@ h1{
     background-image:url('../assets/img/hero/15.jpg');
     background: cover;
     background-size: auto 100%;
-    height: 800px;
+    font-size: 18px;
+    margin-bottom: 0px;
+    padding-bottom:40%;
 }
 .container{
+   height: 100px;
    width: 100%;
-  
+   
 }
 .row{
     height: 150px;
@@ -101,7 +106,7 @@ input{
     margin-bottom: 2%;
 }
 .submitquery{
-    font-size: 100%;
+    font-size: 18px;
     width: 10%;
     height: 50px;
     color:white;
@@ -109,13 +114,12 @@ input{
     border-radius: 15%;
 }
 .submitclear{
-    font-size: 100%;
+    font-size: 18px;
     width: 10%;
     height: 50px;
     background-color: white;
     border-radius: 15%;
     border-color: blue;
-    margin-left: 10%;
 }
 
 </style>
