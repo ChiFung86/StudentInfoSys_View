@@ -23,13 +23,12 @@
             </el-menu-item>
             <div class="el-btn">
             <router-link to="/login" class="">
-            <el-button size="small" round v-show="isShow" >登录</el-button>
+            <el-button size="small" round >登录</el-button>
             </router-link>
-            <div v-show="!isShow" >Welcome! {{userName()}}</div>
             <router-link to="/register" class="" >
-            <el-button size="small" round v-show="isShow">注册</el-button>
+            <el-button size="small" round v-show="!isShow">注册</el-button>
             </router-link>
-            <el-button size="small" round v-show="!isShow" @click="loginout">退出</el-button>
+            <p v-text="welcome" v-show="isShow"></p>
             </div>
             </el-menu>
        
@@ -41,10 +40,10 @@
         <div v-show="display">
         <hr>
         <div>
-            <el-table :data="tableData.slice((currentPage-1)*pageSize,currentPage*pageSize)" style="width: 100%">
+            <el-table :data="tableData" :key="currentPage" style="width: 100%" >
                 <el-table-column prop="id" label="序号" width="150">
                 </el-table-column>
-                <el-table-column prop="num" label="学号" width="150">
+                <el-table-column prop="studentNumber" label="学号" width="150" >
                 </el-table-column>
                 <el-table-column prop="name" label="姓名">
                 </el-table-column>
@@ -52,24 +51,26 @@
                 </el-table-column>
                 <el-table-column prop="sex" label="性别" width="150">
                 </el-table-column>
-                <el-table-column prop="tel" label="手机号码">
+                <el-table-column prop="phoneNumber" label="手机号码">
                 </el-table-column>
-                 <el-table-column prop="class" label="班级" width="150">
+                 <el-table-column prop="className" label="班级" width="150">
                 </el-table-column>
-                <el-table-column prop="dep" label="系部" width="150">
+                <el-table-column prop="department" label="系部" width="150">
                 </el-table-column>
                 <el-table-column prop="action" label="操作">
-                    <router-link to="/add" class="">
-                    <el-button type="primary" icon="el-icon-edit"></el-button>
-                    </router-link>  
-                    <el-button @click="del" type="primary" icon="el-icon-delete"></el-button>
+                    <template slot-scope="scope">
+                        <router-link to="/add" class="">
+                        <el-button type="primary" icon="el-icon-edit"></el-button>
+                        </router-link>  
+                        <el-button @click="deleteStudent(scope.row.studentNumber)" type="primary" icon="el-icon-delete"></el-button>
+                    </template>
                 </el-table-column>
             </el-table>
             <!-- 分页器 -->
             <div class="block" style="margin-top:15px;">
                 <el-pagination align='center' @size-change="handleSizeChange" @current-change="handleCurrentChange" 
-                :current-page="currentPage" :page-sizes="[1,5,10,20]" :page-size="pageSize" 
-                layout="total, sizes, prev, pager, next, jumper" :total="tableData.length">
+                 :current-page="currentPage" :page-sizes="[1,5,10,20]" :page-size="pageSize" 
+                layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -82,7 +83,7 @@
 </template>
 
 <script>
-
+import axios from "axios"
 export default {
     props:["title"],
     data(){
@@ -92,136 +93,70 @@ export default {
             activeIndex: '1',
             activeIndex2: '1',
             welcome:"Welcome!",
-            tableData: [{
-                date: '2016-05-02',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-                }],
-                currentPage: 1, // 当前页码
-                total: 100, // 总条数
-                pageSize: 10 // 每页的数据条数
+            tableData:[],
+            currentPage: 1, // 当前页码
+            total: 0, // 总条数
+            pageSize: 10, // 每页的数据条数
             }
     },
 
         created() {
-            
+            this.getTableData();
         },
-        mounted(){
-            let userName = sessionStorage.getItem('userName');
-            console.log(userName);
-            return userName ? userName :this.userName;
-            
-        },
-        computed: {
-           
-        },
+
+
         methods: {
            handleSelect(key, keyPath) {
                 console.log(key, keyPath);
             },
 
+            //页大小监听函数
             handleSizeChange(val) {
-            console.log(`每页 ${val} 条`);
-            this.currentPage = 1;
-            this.pageSize = val;
+                this.pageSize = val;
+                this.getTableData();
             },
+            
+            //页码监听函数
             handleCurrentChange(val) {
-            console.log(`当前页: ${val}`);
-            this.currentPage = val;
+                 this.currentPage = val;
+                 this.getTableData();
             },
-            loginout:function(){
-                sessionStorage.removeItem('userName');
-                this.isShow=!this.isShow;
-                this.display=!this.display;
+
+            //删除信息
+            deleteStudent(studentNumber){
+                const url = "http://localhost:8081/delete"
+                axios({
+                    method:"delete",
+                    url:url,
+                    params:{
+                        studentNumber:studentNumber,
+                },
+                //   dataType:params,
+                }).then(response=>{
+                    alert(response.data);
+                    this.getTableData();
+                }).catch(err=>{
+                    console.log("err...",err)
+                });
             },
-            userName:function() {
-            let userName = sessionStorage.getItem('userName');
-            console.log(userName);
-            return userName ? userName :this.userName;
+
+            //获取信息列表
+            getTableData(){
+                const url="http://localhost:8081/page";
+                axios({
+                method:"post",
+                url:url,
+                params:{
+                    pageNum:this.currentPage,
+                    pageSize:this.pageSize,
+                },
+                //   dataType:params,
+                }).then(response=>{
+                    this.tableData = response.data.list;
+                    this.total = response.data.total;
+                }).catch(err=>{
+                    console.log("err...",err)
+                });
             }
         },
     }

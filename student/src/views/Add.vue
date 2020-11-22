@@ -7,53 +7,50 @@
             <div class="row row-cols-3">
                 <div class="col-md-4">
                     <label>学生姓名:</label>
-                    <input   type="text" maxlength="30">
+                    <input   type="text" maxlength="30" ref="studentName">
                 </div>
                 <div class="col-md-4">
                     <label>学号:</label>
-                    <input   type="text" maxlength="30">
+                    <input   type="text" maxlength="30" ref="studentNumber">
                 </div>
                 <div class="col-md-4">
                 <label>出生年月日:</label>
-                <input   type="date"><br>
+                <input   type="date" ref="birth"><br>
                 </div>
             </div>
             
 
             <div class="row row-cols-3">
                 <div class="col-md-4">
-                    <b>性别:</b><select name="性别" class="DropDwonList">
-                        <option value="男">男</option>
-                        <option value="女">女</option>
+                    <b>性别:</b>
+                    <select  class="DropDwonList"  v-model="sex"  @change="getSex($event)">
+                        <option v-for="(item,index) in sexList" v-bind:key="index" >
+                        {{item.sex}}
+                        </option>
                         </select>
                 </div>
                 <div class="col-md-4">
                     <label>手机号码:</label>
-                    <input   type="text" id="add_tel">
+                    <input   type="text" id="add_tel" ref="phone">
                 </div>
                 <div class="col-md-4">
                     <label>班级:</label>
-                    <input   type="text" maxlength="30"><br>
+                    <input   type="text" maxlength="30" ref="className"><br>
                 </div>
             </div>
             
             <div class="row row-cols-3 ">
                 <div class="col-md-4">
-                </div>
-                <div class="col-md-4">
-                    <span class="third"><b>系部:</b></span><select name="系部" class="DropDwonList">
-                    <option value="智能制造学部">智能制造学部</option>
-                    <option value="经济管理学院">经济管理学院</option>
-                    <option value="艺术设计学院">艺术设计学院</option>
-                    <option value="政法学院">政法学院</option>
-                    <option value="文学院">文学院</option>
-                    <option value="外国语学院">外国语学院</option>
-                    <option value="数学与计算科学学院">数学与计算科学学院</option>
+                    <span class="third"><b>系部:</b></span>
+                    <select class="DropDwonList" v-model="department"  @change="getDepart($event)">
+                        <option v-for="(item,index) in list" v-bind:key="index" >
+                        {{list[index].departName}}
+                        </option>
                     </select>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-8">
                     <label>信息录入时间:</label>
-                    <input   type="text" placeholder="系统自动生成" disabled="disabled">
+                    <input   type="text" placeholder="系统自动生成" disabled="disabled" ref="inputTime">
                 </div>
             </div>
             <div class="row">
@@ -73,13 +70,30 @@
 </template>
 
 <script>
+import axios from "axios"
 export default {
-    data(){
-        return{
-
+     data(){
+        return {
+            list:[],
+            sexList:[],
+            sex:"",
+            department:"",
         }
     },
-
+    created(){
+        const url="/data/add.json";
+        axios({
+            method:"get",
+            url:url
+        }).then(response=>{
+            this.list=response.data;
+            for(let i=0;i < 3;i++){
+                this.sexList[i] = this.list[i];
+            }
+        }).catch(err=>{
+            console.log("err...",err)
+        });
+    },
     methods:{
         checkAdd:function(){
             var str_tel = document.getElementById('add_tel').value.trim(); 
@@ -87,7 +101,42 @@ export default {
             if(!reg_tel.test(str_tel)){
                 alert("手机号码只能输入数字！");    
             }
-    },
+            // console.log(this.$refs.studentName.value,
+            //             this.$refs.studentNumber.value,
+            //             this.$refs.birth.value,
+            //             this.$refs.phone.value,
+            //             this.$refs.className.value,
+            //             this.$refs.inputTime.value);
+            axios({
+              method:"post",
+              url:"http://localhost:8081/save",
+              data:{
+                  "name": this.$refs.studentName.value,
+                  "studentNumber":this.$refs.studentNumber.value,
+                  "birth":this.$refs.birth.value,
+                  "className:":this.$refs.className.value,
+                  "sex":this.sex,
+                  "department":this.department,
+                  "phoneNumber":this.$refs.phone.value
+              },
+            //   dataType:JSON,
+            }).then(response=>{
+
+                console.log(response.data);
+             }).catch(err=>{
+                 console.log("err...",err)
+             });
+        },
+
+        //获取性别
+        getSex(event){
+            this.sex = event.target.value;
+        },
+
+        //获取学院
+        getDepart(event){
+            this.department = event.target.value;
+        }
 
     }   
 }
@@ -137,9 +186,6 @@ input{
 
 .img{
     height: 100px;
-}
-.upload{
-   
 }
 .submit{
     font-size: 18px;

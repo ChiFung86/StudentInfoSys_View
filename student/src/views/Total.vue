@@ -4,44 +4,59 @@
     <hr class="dottedLine" />
     <table class="table_control">
         <tr class="line1">
-            <td>202001班</td>
-            <td>202002班</td>
-            <td>202003班</td>
-            <td>202004班</td>
-            <td>202005班</td>
-            <td>管理系</td>
-            <td>计算机系</td>
-            <td>土木系</td>
-            <td>男</td>
-            <td>女</td>
+            <td v-for="(cIndex,index) in inforList" v-bind:key="index">
+                {{inforList[index].columnName}}
+            </td>
         </tr>
         <tr class="line2">
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>500人</td>
-            <td>500人</td>
-            <td>500人</td>
-            <td>3000人</td>
-            <td>3000人</td>
+            <td v-for="(cIndex,index) in inforList" v-bind:key="index">
+                {{cIndex.num}}人
+            </td>
         </tr>
     </table>
     
-        <p class="total"><b>合计共6000人</b></p>
+        <p class="total"><b>合计共{{sum}}人</b></p>
 		
 	</div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
 	props: {
 		
-	},
+    },
+    
 	data(){
-		
-	},
+		return{
+            inforList:[],
+            sum:0,
+        }
+    },
+    
+    created() {
+    const url="http://localhost:8081/getInfors";
+    axios({
+      method:"get",
+      url:url
+    }).then(response=>{
+        let list = response.data;
+        let len = list.length;
+        console.log(list.length);
+        for(let i=0;i<len;i++){
+            if(i == len-1){
+                this.sum = list[i].num;
+                break;
+            }
+            this.inforList[i] = list[i];
+        }
+        
+    }).catch(err=>{
+      console.log("err......",err)
+    });
+
+    },
+
 	methods:{
 		
 	}
@@ -88,6 +103,7 @@ td{
     width: 10%;
     border-style: solid;
     border-color:black;
+    overflow: auto;
 }
 .line1{
     background: rgb(19, 129, 192);

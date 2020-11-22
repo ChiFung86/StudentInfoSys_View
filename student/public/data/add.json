@@ -1,0 +1,20 @@
+    [{
+        "departName": "",
+        "sex": ""
+    }, {
+        "departName": "智能制造学部",
+        "sex": "男"
+    }, {
+        "departName": "经济管理学院",
+        "sex": "女"
+    }, {
+        "departName": "艺术设计学院"
+    }, {
+        "departName": "政法学院"
+    }, {
+        "departName": "文学院"
+    }, {
+        "departName": "外国语学院"
+    }, {
+        "departName": "数学与计算科学学院"
+    }]
