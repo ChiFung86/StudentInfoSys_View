@@ -23,12 +23,13 @@
             </el-menu-item>
             <div class="el-btn">
             <router-link to="/login" class="">
-            <el-button size="small" round >登录</el-button>
+            <el-button size="small" round v-show="isShow" >登录</el-button>
             </router-link>
+            <div v-show="!isShow" >Welcome! {{userName()}}</div>
             <router-link to="/register" class="" >
-            <el-button size="small" round v-show="!isShow">注册</el-button>
+            <el-button size="small" round v-show="isShow">注册</el-button>
             </router-link>
-            <p v-text="welcome" v-show="isShow"></p>
+            <el-button size="small" round v-show="!isShow" @click="loginout">退出</el-button>
             </div>
             </el-menu>
        
@@ -187,7 +188,17 @@ export default {
     },
 
         created() {
-            },
+            
+        },
+        mounted(){
+            let userName = sessionStorage.getItem('userName');
+            console.log(userName);
+            return userName ? userName :this.userName;
+            
+        },
+        computed: {
+           
+        },
         methods: {
            handleSelect(key, keyPath) {
                 console.log(key, keyPath);
@@ -201,6 +212,16 @@ export default {
             handleCurrentChange(val) {
             console.log(`当前页: ${val}`);
             this.currentPage = val;
+            },
+            loginout:function(){
+                sessionStorage.removeItem('userName');
+                this.isShow=!this.isShow;
+                this.display=!this.display;
+            },
+            userName:function() {
+            let userName = sessionStorage.getItem('userName');
+            console.log(userName);
+            return userName ? userName :this.userName;
             }
         },
     }

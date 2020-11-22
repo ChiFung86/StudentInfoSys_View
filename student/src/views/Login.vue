@@ -28,7 +28,7 @@
           type="danger" 
           class="submitBtn"
           round
-          @click="checkLog(LoginForm)">
+          @click="login(LoginForm)">
           登录
         </el-button>
         <hr>
@@ -56,7 +56,7 @@ export default {
         register () {
         this.$router.push('/Register');
     },
-		checkLog:function(LoginForm){
+		login:function(LoginForm){
             var str_id = this.$refs.userId.value;
             var reg_id = /^\d{1,30}$/;
             var str_pwd = this.$refs.password.value;
@@ -79,6 +79,7 @@ export default {
                 if(response.data.result == "登陆成功") {
                     alert(response.data.result);
                     sessionStorage.setItem("userId", response.data.result);
+                    sessionStorage.setItem("userName", response.data.userName);
                         this.$router.push('/');
                     
                 } else if(response.data.result =="用户ID不存在"){
@@ -104,38 +105,7 @@ export default {
                 });
             }
                  
-            },
-        login:function(LoginForm){
-            this.LoginForm = LoginForm;            
-            this.$axios.post('http://localhost:8081/user/login',this.LoginForm).then((response) => {
-                
-              if(response.data.result == "登陆成功") {
-                  alert(response.data.result);
-                  sessionStorage.setItem("userId", response.data.result);
-                    this.$router.push('/');
-                  
-              } else if(response.data.result =="用户ID不存在"){
-                 this.$message({
-                  type:'error',
-                  message:'用户ID不存在，请重新输入'
-                });
-
-              }else if(response.data.result =="用户ID或密码为空"){
-                 this.$message({
-                  type:'error',
-                  message:'用户ID或密码为空，请重新输入'
-                });
-
-              }else{
-                  this.$message({
-                  type:'error',
-                  message:'用户ID或密码输入错误，请重新输入'
-                });
-              }
-            }).catch((error) => {
-              console.log(error);
-            });
-        },
+          },        
     }
 }
 
