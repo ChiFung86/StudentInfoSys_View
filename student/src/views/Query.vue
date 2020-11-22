@@ -1,6 +1,6 @@
 <template>
 	<div class="query_control" >
-    <h1>条件查询</h1><br><br>
+    <h1>查询条件</h1><br><br>
     <hr class="dottedLine" />
 	
     <div class="container" >
@@ -21,19 +21,20 @@
         </div>
         <div class="row row-cols-3">
             <div class="col-md-4">  
-                <b>性别:</b>
-                    <select  class="DropDwonList">
-                        <option v-for="(item,index) in sexList" v-bind:key="index" >
-                        {{item.sex}}
-                        </option>
+                <b>性别:</b><select name="性别" class="DropDwonList">
+                    <option value="男">男</option>
+                    <option value="女">女</option>
                     </select>
             </div> 
             <div class="col-md-4">
-                <b>系部:</b>
-                    <select class="DropDwonList">
-                        <option v-for="(item,index) in list" v-bind:key="index" >
-                        {{list[index].departName}}
-                        </option>
+                <b>系部:</b><select name="系部" class="DropDwonList">
+                    <option value="智能制造学部">智能制造学部</option>
+                    <option value="经济管理学院">经济管理学院</option>
+                    <option value="艺术设计学院">艺术设计学院</option>
+                    <option value="政法学院">政法学院</option>
+                    <option value="文学院">文学院</option>
+                    <option value="外国语学院">外国语学院</option>
+                    <option value="数学与计算科学学院">数学与计算科学学院</option>
                     </select>
             </div>
         </div>
@@ -54,30 +55,13 @@
 </template>
 
 <script>
-import axios from "axios"
 export default {
-  data(){
-        return {
-            showList:false,
-            list:[],
-            sexList:[],
-        }
-    },
-    created(){
-        const url="/data/add.json";
-        axios({
-            method:"get",
-            url:url
-        }).then(response=>{
-            this.list=response.data;
-            for(let i=0;i < 3;i++){
-                this.sexList[i] = this.list[i];
-            }
-            console.log(this.list);
-        }).catch(err=>{
-            console.log("err...",err)
-        });
-    },
+  date(){
+    return{
+      showList:false
+    }
+  }
+    
 }
 </script>
 
