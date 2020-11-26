@@ -1,47 +1,66 @@
 <template>
-	<div class="statistics_control">
-    <h1>信息统计</h1><br><br>
-    <hr class="dottedLine" />
+	<div class="statistics_control container">
+    <span class="title">GBA学生信息管理系统-信息统计</span>
+    <router-link to="/" class="back">
+            <el-button type="" >返回</el-button>
+        </router-link>
+        <br><br>
+    <hr >
     <table class="table_control">
         <tr class="line1">
-            <td>202001班</td>
-            <td>202002班</td>
-            <td>202003班</td>
-            <td>202004班</td>
-            <td>202005班</td>
-            <td>管理系</td>
-            <td>计算机系</td>
-            <td>土木系</td>
-            <td>男</td>
-            <td>女</td>
+            <td v-for="(cIndex,index) in inforList" v-bind:key="index">
+                {{inforList[index].columnName}}
+            </td>
         </tr>
         <tr class="line2">
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>50人</td>
-            <td>500人</td>
-            <td>500人</td>
-            <td>500人</td>
-            <td>3000人</td>
-            <td>3000人</td>
+            <td v-for="(cIndex,index) in inforList" v-bind:key="index">
+                {{cIndex.num}}人
+            </td>
         </tr>
     </table>
     
-        <p class="total"><b>合计共6000人</b></p>
+        <p class="total"><b>合计{{sum}}人</b></p>
 		
 	</div>
 </template>
 
 <script>
+import axios from "axios"
 export default {
 	props: {
 		
-	},
+    },
+    
 	data(){
-		
-	},
+		return{
+            inforList:[],
+            sum:0,
+        }
+    },
+    
+    created() {
+    const url="http://localhost:8081/getInfors";
+    axios({
+      method:"get",
+      url:url
+    }).then(response=>{
+        let list = response.data;
+        let len = list.length;
+        console.log(list.length);
+        for(let i=0;i<len;i++){
+            if(i == len-1){
+                this.sum = list[i].num;
+                break;
+            }
+            this.inforList[i] = list[i];
+        }
+        
+    }).catch(err=>{
+      console.log("err......",err)
+    });
+
+    },
+
 	methods:{
 		
 	}
@@ -50,6 +69,15 @@ export default {
 
 
 <style scoped>
+.container{
+    background-image:url('../assets/img/hero/4.jpg');
+    position:fixed;
+    width: 100%;
+    height: 100%;
+   background-color: rgb(129, 143, 158);
+  
+
+}
 .statistics_control{
     background-size: cover;
     background-repeat: no-repeat;
@@ -58,6 +86,13 @@ export default {
 }
 h1{
     position:absolute;
+}
+.title{
+  position: fixed;
+  left: 0;
+  font-size: 40px;
+  color: rgb(233, 174, 134);
+  font-weight: bold;
 }
 .dottedLine {
     height: 150px;
@@ -68,29 +103,30 @@ h1{
 text-align: center;
 font-family: verdana,arial,sans-serif;
 font-size:11px;
-border:black solid 1px;
+border:black  solid 0px;
 border-collapse: collapse;
 width: 80%;
 height: 25%;
-margin-bottom:25%;
+margin-top:5%;
 margin-left: 10%;
 }
 th{
     border-width: 1px;
     padding: 8px;
     height: 50%;
-    border-style: solid;
+    border-style: solid 0px;
     border-color:black;
 }
 td{
     border-width: 1px;
     padding: 8px;
     width: 10%;
-    border-style: solid;
-    border-color:black;
+    border-style: solid ;
+    border-color:rgb(84, 120, 141);
+    overflow: auto;
 }
 .line1{
-    background: rgb(19, 129, 192);
+    background: rgb(91, 126, 146);
     color: white;
     font-size: 15px;
 }
@@ -100,9 +136,20 @@ td{
     
 }
 .total{
-    margin-right: 70%;
-    margin-top: 5%;
+    margin-right: -70%;
+    margin-top: 2%;
     font-size: 30px;
     
+}
+.back{
+    position: fixed;
+    top:2%;
+    right: 2%;
+ 
+}
+hr{
+ width:100%;
+ height:1px;
+ background-color:#fff;
 }
 </style>

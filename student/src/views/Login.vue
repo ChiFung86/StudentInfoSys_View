@@ -1,26 +1,33 @@
 <template>
 	<div class="land_control">
     <br><br>
-    <hr class="dottedLine" />
+   
         <el-form 
       :model="LoginForm" 
       status-icon
       ref="LoginForm" 
       label-width="0"
       class="login-form">
+      <h2>GBA学生信息管理系统</h2>
       <h3>登录</h3>
       <el-form-item prop="userId">
         <el-input 
           type="text" 
           v-model="LoginForm.userId" 
-          placeholder="用户名" ref="userId">
+          placeholder="用户名" 
+          ref="userId"
+          maxlength="30">
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input 
+          id="pw1"
           type="password" 
           v-model="LoginForm.password" 
-          placeholder="密码" ref="password">
+          placeholder="密码" 
+          ref="password"
+          maxlength="30">
+          <i id="icon1" slot="suffix" class="el-input__icon el-icon-lock" v-on:click="showPw1"></i>
         </el-input>
       </el-form-item>
       <el-form-item>
@@ -58,40 +65,41 @@ export default {
     },
 		login:function(LoginForm){
             var str_id = this.$refs.userId.value;
-            var reg_id = /^\d{1,30}$/;
             var str_pwd = this.$refs.password.value;
-            var reg_pwd = /^(?=.*[a-zA-Z])(?=.*[~!@#$%^&*])[a-zA-Z~!@#$%^&*]{8,30}$/;
             if(str_id.length==0){
-                alert("用户名不能为空！");
-            }else if(!reg_id.test(str_id)){
-                alert("用户名格式不正确！");
-            }
-            else if(str_pwd.length==0){
-                alert("密码不能为空！");
-            }else if(str_pwd.length<8 || str_pwd.length>30){
-                alert("密码长度至少为八位！");
-            }else if(!reg_pwd.test(str_pwd)){
-                alert("密码必须包含大小写和特殊字符！");   
+                this.$message({
+                message: '用户名不能为空！',
+                type: 'warning'
+                 });
+            }else if(str_pwd==30){
+              this.$message({
+                message: '密码不能为空！',
+                type: 'warning'
+                 });
             }else{
                 this.LoginForm = LoginForm;            
                  this.$axios.post('http://localhost:8081/user/login',this.LoginForm).then((response) => {
                 
                 if(response.data.result == "登陆成功") {
-                    alert(response.data.result);
-                    sessionStorage.setItem("userId", response.data.result);
+                    this.$message({
+                      message: response.data.result,
+                      type: 'success'
+                      });
+                    sessionStorage.setItem("result", response.data.result);
+                    sessionStorage.setItem("userId", response.data.userId);
                     sessionStorage.setItem("userName", response.data.userName);
                         this.$router.push('/');
                     
                 } else if(response.data.result =="用户ID不存在"){
                     this.$message({
                     type:'error',
-                    message:'用户ID不存在，请重新输入'
+                    message:'用户ID或密码输入错误，请重新输入'
                     });
 
                 }else if(response.data.result =="用户ID或密码为空"){
                     this.$message({
                     type:'error',
-                    message:'用户ID或密码为空，请重新输入'
+                    message:'用户ID或密码输入错误，请重新输入'
                     });
 
                 }else{
@@ -105,7 +113,16 @@ export default {
                 });
             }
                  
-          },        
+          },  
+          showPw1(){
+      if(document.getElementById("pw1").type=="password"){
+        document.getElementById("pw1").type="text"
+        document.getElementById("icon1").className="el-input__icon el-icon-unlock"
+      }else{
+        document.getElementById("pw1").type="password"
+        document.getElementById("icon1").className="el-input__icon el-icon-lock"
+      }
+}      
     }
 }
 
@@ -113,7 +130,7 @@ export default {
 
 <style scoped>
 .land_control{
-    background-image:url('../assets/img/hero/14.jpg');
+    background-image:url('../assets/img/hero/4.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -122,7 +139,8 @@ export default {
 }
 .login-form {
   margin: 0 auto;
-  width: 380px;
+  width: 400px;
+  height: 450px;
   background: #fff;
   box-shadow: 0 0 10px #B4BCCC;
   padding: 20px 30px 0 30px;
@@ -151,5 +169,14 @@ export default {
 }
 h3 {
   text-align: center;
+}
+.el-icon-lock{
+  cursor: pointer;  /*鼠标悬停变小手*/
+}
+.el-icon-unlock{
+  cursor: pointer;  /*鼠标悬停变小手*/
+}
+h3{
+  margin-bottom: 30px;
 }
 </style>

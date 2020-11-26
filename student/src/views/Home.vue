@@ -22,7 +22,7 @@ export default {
 </script>
 <style >
 .home{
-  color: rgb(191, 197, 192);
+  color: rgb(234, 241, 235);
 
 }
 </style>
