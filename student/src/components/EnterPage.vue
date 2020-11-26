@@ -7,13 +7,12 @@
         <div>
             <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
              
-          <router-link to="/register" class=""><el-menu-item index="2">用户注册<el-divider direction="vertical"></el-divider> </el-menu-item></router-link> 
-          
+          <router-link to="/register" class=""><el-menu-item index="2">用户注册<el-divider direction="vertical"></el-divider> </el-menu-item></router-link>          
           <router-link to="/alter" class=""><el-menu-item index="3">修改用户信息<el-divider direction="vertical"></el-divider> </el-menu-item></router-link>
           <router-link to="/add" class=""><el-menu-item index="4">新增学生信息<el-divider direction="vertical"></el-divider> </el-menu-item></router-link>
           <router-link to="/total" class=""> <el-menu-item index="5">学生信息统计<el-divider direction="vertical"></el-divider> </el-menu-item></router-link>
           <router-link to="/query" class=""><el-menu-item index="6">学生信息查询</el-menu-item></router-link>
-          <el-menu-item index="6">
+          <el-menu-item >
           <el-upload
                     ref="upload"
                     :action="importUrl"
@@ -26,7 +25,7 @@
                     <el-button size="small" type="success" @click="uploadFile" v-show="!isShow" >导入学生信息</el-button >                   
                  </el-upload>
           </el-menu-item>
-          <el-menu-item index="6"><el-button size="small" type="success" @click="exportFile" class="output" v-show="!isShow">导出学生信息</el-button > 
+          <el-menu-item ><el-button size="small" type="success" @click="exportFile" class="output" v-show="!isShow">导出学生信息</el-button > 
 </el-menu-item>
             <div class="el-btn">
             <router-link to="/login" class="">

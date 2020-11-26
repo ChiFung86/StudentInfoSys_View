@@ -194,7 +194,10 @@ export default {
       })
         .then((response) => {
           console.log(response.data);
-          alert("修改成功");
+           this.$message({
+                    type:'success',
+                    message:'修改成功'
+            });
           if (this.defaultImg[0].url != this.photoUrl) {
             axios({
               method: "post",
