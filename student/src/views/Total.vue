@@ -17,6 +17,28 @@
                 {{cIndex.num}}人
             </td>
         </tr>
+        <br/>
+        <tr class="line3">
+          <td v-for="(cIndex,index) in classList" :key="index">
+              {{classList[index].columnName}}班
+          </td>
+        </tr>
+        <tr class="line4">
+            <td v-for="(cIndex,index) in classList" :key="index">
+               {{cIndex.num}}人
+            </td>
+        </tr>
+        <br/>
+        <tr class="line5">
+          <td v-for="(cIndex,index) in sexList" :key="index">
+              {{sexList[index].columnName}}
+          </td>
+        </tr>
+        <tr class="line6">
+            <td v-for="(cIndex,index) in sexList" :key="index">
+               {{cIndex.num}}人
+            </td>
+        </tr>
     </table>
     
         <p class="total"><b>合计{{sum}}人</b></p>
@@ -34,6 +56,8 @@ export default {
 	data(){
 		return{
             inforList:[],
+            sexList:[],
+            classList:[],
             sum:0,
         }
     },
@@ -46,13 +70,22 @@ export default {
     }).then(response=>{
         let list = response.data;
         let len = list.length;
-        console.log(list.length);
-        for(let i=0;i<len;i++){
-            if(i == len-1){
-                this.sum = list[i].num;
-                break;
+        this.sum = list[len - 1].num
+        let tip = 0;
+        for(let i=0;i<len - 1;i++){
+            if(list[i].columnName == "-1"){
+                tip = -1;
+                continue;
             }
-            this.inforList[i] = list[i];
+            if(tip == -1&&i < len - 3){
+                this.classList.push(list[i]);
+            }
+            else if(i >= len-3){
+               this.sexList.push(list[i]);
+            }else{
+                this.inforList[i] = list[i];
+            }
+            
         }
         
     }).catch(err=>{
@@ -125,12 +158,12 @@ td{
     border-color:rgb(84, 120, 141);
     overflow: auto;
 }
-.line1{
+.line1, .line3, .line5{
     background: rgb(91, 126, 146);
     color: white;
     font-size: 15px;
 }
-.line2{
+.line2, .line4, .line6{
     background: white;
     font-size: 15px;
     
